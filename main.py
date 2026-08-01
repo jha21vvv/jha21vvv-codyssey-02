@@ -1,5 +1,5 @@
 class Quiz:
-    def __init__(self, question, choices, answer):
+    def __init__(self, question, choices, answer,hint):
         """
         문제 카드 한 장을 만드는 설계도입니다.
         :param question: 문제 내용 (문자열)
@@ -9,13 +9,16 @@ class Quiz:
         self.question = question
         self.choices = choices
         self.answer = answer
+        self.hint = hint # 힌트 저장
 
     def to_dict(self):
         """나중에 파일(JSON)에 저장하기 쉽게 사전 형태로 변환합니다."""
         return {
             "question": self.question,
             "choices": self.choices,
-            "answer": self.answer
+            "answer": self.answer,
+            "hint": self.hint 
+            # 힌트 포함
         }
 
 class QuizGame:
@@ -52,7 +55,7 @@ class QuizGame:
                # print("\n[알림] 퀴즈 등록 기능을 준비 중입니다.") <- 이 줄을 아래로 교체
                self.add_quiz()
             elif choice == "3":
-                print("\n[알림] 퀴즈 목록 보기 기능을 준비 중입니다.")
+                self.show_quizzes() # 3번 메뉴 연결
             elif choice == "4":
                 print("\n[알림] 최고 점수 확인 기능을 준비 중입니다.")
             elif choice == "5":
@@ -72,20 +75,35 @@ class QuizGame:
         for i in range(1, 5):
             choice = input(f"보기 {i}번을 입력하세요: ")
             choices.append(choice)
-            
+        hint = input("힌트를 입력하세요: ") 
+
         # 3. 정답 번호 입력 받기
         try:
             answer = int(input("정답 번호를 입력하세요 (1~4): "))
             if 1 <= answer <= 4:
                 # 4. Quiz 객체 생성 및 리스트에 추가
-                new_quiz = Quiz(question, choices, answer)
+                new_quiz = Quiz(question, choices, hint) 
                 self.quizzes.append(new_quiz)
                 print("\n[성공] 퀴즈가 등록되었습니다!")
             else:
                 print("\n[오류] 정답은 1~4 사이의 숫자여야 합니다. 등록 실패.")
         except ValueError:
             print("\n[오류] 숫자를 입력해야 합니다. 등록 실패.")
-            
+        # 힌트 입력 단계 추가
+    def show_quizzes(self):
+        print("\n" + "-"*20)
+        print("등록된 퀴즈 목록")
+        
+        if not self.quizzes:
+            print("등록된 퀴즈가 없습니다. 먼저 퀴즈를 등록해 주세요!")
+            return
+
+        for i, quiz in enumerate(self.quizzes, 1):
+            print(f"{i}. {quiz.question} (정답: {quiz.answer}번)")
+            for j, choice in enumerate(quiz.choices, 1):
+                print(f"   {j}) {choice}")
+            print(f"   [힌트: {quiz.hint}]") # 힌트도 잘 들어갔는지 확인
+        print("-"*20)        
 # 프로그램의 시작점
 #임포트가 아니라 python main.py라고 쳐서 이 파일을 주인공으로 실행했을 때 게임을 즉시 시작한다는 내용
 if __name__ == "__main__":
