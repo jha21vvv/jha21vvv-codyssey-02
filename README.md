@@ -15,6 +15,7 @@
 ## 5. 파일 구조
 - main.py: 메인 실행 파일
 - state.json: 데이터 저장 파일
+- quizzes.json (퀴즈 데이터 저장), scores.json (점수 기록 저장)
 
 
 ## 6. .gitignore 입력사항
@@ -34,3 +35,24 @@ git commit -m "init: 프로젝트 초기 구조 설정 (.gitignore, README, main
 # 3. 내 컴퓨터의 기록을 GitHub(원격 저장소)로 보냅니다.
 git push origin main
 ```
+
+2. GitHub 미션 해결하기 (이미지 3번 내용)
+이미지에 있는 **"최소 1회 이상의 브랜치 생성 및 병합"**과 "10개 이상의 커밋" 조건을 충족해야 합니다. 지금이 딱 브랜치를 연습해볼 타이밍이에요!
+
+[미션: 브랜치 만들고 '퀴즈 풀기' 기능 구현하기]
+
+새 브랜치 만들기: 터미널에 입력하세요.
+
+bash
+📋 복사
+git checkout -b feature/play-quiz
+(이제 main이 아닌 feature/play-quiz라는 복사본 작업실에서 코드를 수정하게 됩니다.)
+
+기능 구현 후 커밋: 퀴즈 풀기 기능을 만들면서 커밋을 쪼개서 해보세요. (예: "문제 출력 기능 구현", "정답 체크 로직 구현" 등) 이렇게 하면 10개 커밋 채우기가 쉽습니다.
+
+병합(Merge)하기: 기능이 완성되면 다시 main으로 돌아가서 합칩니다.
+
+bash
+📋 복사
+git checkout main
+git merge feature/play-quiz
