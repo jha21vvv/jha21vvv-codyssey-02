@@ -49,7 +49,8 @@ class QuizGame:
             if choice == "1":
                 print("\n[알림] 퀴즈 풀기 기능을 준비 중입니다.")
             elif choice == "2":
-                print("\n[알림] 퀴즈 등록 기능을 준비 중입니다.")
+               # print("\n[알림] 퀴즈 등록 기능을 준비 중입니다.") <- 이 줄을 아래로 교체
+               self.add_quiz()
             elif choice == "3":
                 print("\n[알림] 퀴즈 목록 보기 기능을 준비 중입니다.")
             elif choice == "4":
@@ -59,6 +60,32 @@ class QuizGame:
                 self.is_running = False
             else:
                 print("\n[오류] 잘못된 입력입니다. 1~5 사이의 숫자를 입력해주세요.")
+    def add_quiz(self):
+        print("\n" + "-"*20)
+        print("새로운 퀴즈를 등록합니다.")
+        
+        # 1. 문제 입력 받기
+        question = input("문제 내용을 입력하세요: ")
+        
+        # 2. 보기 4개 입력 받기 (리스트 활용)
+        choices = []
+        for i in range(1, 5):
+            choice = input(f"보기 {i}번을 입력하세요: ")
+            choices.append(choice)
+            
+        # 3. 정답 번호 입력 받기
+        try:
+            answer = int(input("정답 번호를 입력하세요 (1~4): "))
+            if 1 <= answer <= 4:
+                # 4. Quiz 객체 생성 및 리스트에 추가
+                new_quiz = Quiz(question, choices, answer)
+                self.quizzes.append(new_quiz)
+                print("\n[성공] 퀴즈가 등록되었습니다!")
+            else:
+                print("\n[오류] 정답은 1~4 사이의 숫자여야 합니다. 등록 실패.")
+        except ValueError:
+            print("\n[오류] 숫자를 입력해야 합니다. 등록 실패.")
+            
 # 프로그램의 시작점
 #임포트가 아니라 python main.py라고 쳐서 이 파일을 주인공으로 실행했을 때 게임을 즉시 시작한다는 내용
 if __name__ == "__main__":
