@@ -1,49 +1,34 @@
 import json
+import random
 
 class Quiz:
-    def __init__(self, question, choices, answer,hint):
-        """
-        문제 카드 한 장을 만드는 설계도입니다.
-        :param question: 문제 내용 (문자열)
-        :param choices: 보기 4개 (리스트)
-        :param answer: 정답 번호 (정수)
-        """
+    def __init__(self, question, choices, answer, hint):
         self.question = question
         self.choices = choices
         self.answer = answer
-        self.hint = hint # 힌트 저장
+        self.hint = hint
 
     def to_dict(self):
-        """나중에 파일(JSON)에 저장하기 쉽게 사전 형태로 변환합니다."""
         return {
             "question": self.question,
             "choices": self.choices,
             "answer": self.answer,
-            "hint": self.hint 
-            # 힌트 포함
+            "hint": self.hint
         }
-
 
 class QuizGame:
     def __init__(self):
-        # 게임이 계속 실행될지 결정하는 변수입니다.
-        # 1. 이 게임 객체가 만들어지는 순간 자동으로 실행된다.
-        # 2. 'self'라는 내 주머니 안에 'is_running'이라는 스위치를 넣는다.
-        # 3. 그 스위치의 초기 상태를 'True(켜짐)'로 설정한다
         self.is_running = True
-        # 퀴즈 객체들을 담을 리스트
         self.quizzes = []
-        # 최고 점수 기록
-        self.best_score = 0
-        self.load_quizzes() # 1. 시작할 때 파일 불러오기 추가
-
+        self.high_score = 0  # 변수명을 high_score로 통일
+        self.load_data()      # 메서드명을 load_data로 통일
 
     def display_menu(self):
         print("\n" + "="*20)
         print("   파이썬 퀴즈 게임")
         print("="*20)
         print("1. 퀴즈 풀기")
-        print("2. 퀴즈 등록")
+        print("2. 퀴즈 관리 (등록/저장/불러오기)")
         print("3. 퀴즈 목록 보기")
         print("4. 최고 점수 확인")
         print("5. 퀴즈 삭제")
@@ -57,133 +42,154 @@ class QuizGame:
             
             if choice == "1":
                 self.play_quiz()
-            elif choice == "2":
-               # print("\n[알림] 퀴즈 등록 기능을 준비 중입니다.") <- 이 줄을 아래로 교체
-               self.add_quiz()
+            elif choice == '2':
+                self.manage_quizzes()
             elif choice == "3":
-                self.show_quizzes() # 3번 메뉴 연결
+                self.show_quizzes()
             elif choice == "4":
-                print("\n[알림] 최고 점수 확인 기능을 준비 중입니다.")
+                self.show_high_score()
             elif choice == "5":
                 self.delete_quiz()
-            elif choice == "6": # 공백 제거
+            elif choice == "6":
                 print("\n게임을 종료합니다. 이용해 주셔서 감사합니다!")
                 self.is_running = False
             else:
-                # 메시지를 1~6으로 수정
                 print("\n[오류] 잘못된 입력입니다. 1~6 사이의 숫자를 입력해주세요.")
 
     def play_quiz(self):
         if not self.quizzes:
-            print("\n[!] 등록된 퀴즈가 없습니다.")
+            print("\n[!] 등록된 퀴즈가 없습니다. 먼저 퀴즈를 등록해주세요.")
             return
 
-        print(f"\n--- 게임 시작! (틀리면 힌트가 제공됩니다) ---")
         score = 0
+        quiz_list = list(self.quizzes)
+        random.shuffle(quiz_list)
 
-        for idx, quiz in enumerate(self.quizzes, 1):
-            # --- [추가] 맞힐 때까지 반복하는 구간 ---
-            while True: 
-                print(f"\nQ{idx}. {quiz.question}")
-                for i, choice in enumerate(quiz.choices, 1):
-                    print(f"  {i}) {choice}")
-                
-                try:
-                    user_ans = int(input("정답 번호: "))
+        print("\n" + "="*20)
+        print("🚀 퀴즈를 시작합니다! (기회는 총 2번!)")
+        print("="*20)
+
+        for quiz in quiz_list:
+            print(f"\n[문제] {quiz.question}")
+            for i, choice in enumerate(quiz.choices, 1):
+                print(f"{i}. {choice}")
+
+            try:
+                user_ans = int(input("\n(1차 시도) 정답 번호: "))
+                if user_ans == quiz.answer:
+                    print("✅ 정답입니다! (+2점)")
+                    score += 2
+                else:
+                    print(f"\n❌ 틀렸습니다! 힌트를 드릴게요.")
+                    print(f"💡 힌트: {quiz.hint}")
+                    user_ans = int(input("(2차 시도) 다시 입력: "))
                     
                     if user_ans == quiz.answer:
-                        print("정답입니다! ✨")
+                        print("✅ 정답입니다! (+1점)")
                         score += 1
-                        break  # 정답을 맞혔으므로 while문을 빠져나가 다음 문제(for문)로 이동
                     else:
-                        print("오답입니다. 😢")
-                        if quiz.hint:
-                            print(f"💡 힌트: {quiz.hint}")
-                        print("다시 한번 생각해보세요!")
-                        # break가 없으므로 다시 while문의 처음으로 돌아가 같은 문제를 냅니다.
-                except ValueError:
-                    print("숫자만 입력해주세요!")
-            # ---------------------------------------
-        print(f"\n--- 게임 종료! 최종 점수: {score} / {len(self.quizzes)} ---")
+                        print(f"❌ 아쉽네요. 정답은 {quiz.answer}번이었습니다.")
+            except ValueError:
+                print("⚠️ 숫자로만 입력해야 합니다. 다음 문제로 넘어갑니다.")
+
+        print(f"\n🎊 게임 종료! 최종 점수: {score}점")
+        if score > self.high_score:
+            print(f"⭐ 최고 점수 갱신! ({self.high_score} -> {score})")
+            self.high_score = score
+            self.save_data()
+
+    def manage_quizzes(self):
+        while True:
+            print("\n" + "-"*20)
+            print("   퀴즈 관리 메뉴")
+            print("1. 새로운 퀴즈 등록 (Add)")
+            print("2. 파일에서 불러오기 (Load)")
+            print("3. 파일에 저장하기 (Save)")
+            print("4. 메인 메뉴로 돌아가기")
+            print("-"*20)
+            
+            choice = input("선택: ")
+            if choice == '1':
+                self.add_quiz()
+            elif choice == '2':
+                self.load_data()
+                print("\n[성공] 데이터를 불러왔습니다.")
+            elif choice == '3':
+                self.save_data()
+                print("\n[성공] 데이터를 저장했습니다.")
+            elif choice == '4':
+                break
 
     def add_quiz(self):
-        print("\n" + "-"*20)
-        print("새로운 퀴즈를 등록합니다.")
-        
-        # 1. 문제 입력 받기
-        question = input("문제 내용을 입력하세요: ")
-        
-        # 2. 보기 4개 입력 받기 (리스트 활용)
-        choices = []
-        for i in range(1, 5):
-            choice = input(f"보기 {i}번을 입력하세요: ")
-            choices.append(choice)
-        hint = input("힌트를 입력하세요: ") 
-
-        # 3. 정답 번호 입력 받기
+        question = input("\n문제 내용: ")
+        choices = [input(f"보기 {i}번: ") for i in range(1, 5)]
+        hint = input("힌트 내용: ")
         try:
-            answer = int(input("정답 번호를 입력하세요 (1~4): "))
-            if 1 <= answer <= 4:
-                # 4. Quiz 객체 생성 및 리스트에 추가
-                new_quiz = Quiz(question, choices, answer, hint) 
-                self.quizzes.append(new_quiz)
-                print("\n[성공] 퀴즈가 등록되었습니다!")
-            else:
-                print("\n[오류] 정답은 1~4 사이의 숫자여야 합니다. 등록 실패.")
+            answer = int(input("정답 번호 (1-4): "))
+            self.quizzes.append(Quiz(question, choices, answer, hint))
+            print("[알림] 메모리에 추가되었습니다. 저장하려면 Save를 눌러주세요.")
         except ValueError:
-            print("\n[오류] 숫자를 입력해야 합니다. 등록 실패.")
-        # 힌트 입력 단계 추가
+            print("[오류] 숫자를 입력하세요.")
+
     def show_quizzes(self):
-        print("\n" + "-"*20)
-        print("등록된 퀴즈 목록")
+        print("\n" + "="*20)
+        print("   현재 등록된 퀴즈 목록")
+        print("="*20)
         
         if not self.quizzes:
-            print("등록된 퀴즈가 없습니다. 먼저 퀴즈를 등록해 주세요!")
+            print("[!] 등록된 퀴즈가 없습니다.")
             return
 
         for i, quiz in enumerate(self.quizzes, 1):
-            print(f"{i}. {quiz.question} (정답: {quiz.answer}번)")
-            for j, choice in enumerate(quiz.choices, 1):
-                print(f"   {j}) {choice}")
-            print(f"   [힌트: {quiz.hint}]") # 힌트도 잘 들어갔는지 확인
-        print("-"*20)        
+            # quiz 객체에서 question 속성을 가져와서 출력
+            print(f"{i}. {quiz.question}")
+        print("="*20)
 
-    def save_quizzes(self):
-        # 퀴즈 객체들을 딕셔너리 리스트로 변환
-        data = [quiz.to_dict() for quiz in self.quizzes]
+    def delete_quiz(self):
+        self.show_quizzes()
+        if not self.quizzes: return
+        try:
+            idx = int(input("\n삭제할 번호: ")) - 1
+            if 0 <= idx < len(self.quizzes):
+                del self.quizzes[idx]
+                print("[삭제 완료]")
+            else:
+                print("[오류] 범위를 벗어났습니다.")
+        except ValueError:
+            print("[오류] 숫자를 입력하세요.")
+
+    def show_high_score(self):
+        print(f"\n🏆 현재 최고 점수: {self.high_score}점")
+
+    def save_data(self):
+        data = {
+            "high_score": self.high_score,
+            "quizzes": [q.to_dict() for q in self.quizzes]
+        }
         with open("quizzes.json", "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
-        print("\n[시스템] 데이터가 파일에 저장되었습니다.")
 
-    def load_quizzes(self):
+    def load_data(self):
         try:
             with open("quizzes.json", "r", encoding="utf-8") as f:
                 data = json.load(f)
-                # 딕셔너리 데이터를 다시 Quiz 객체로 변환
-                self.quizzes = [Quiz(d['question'], d['choices'], d['answer'], d['hint']) for d in data]
-        except FileNotFoundError:
-            # 파일이 없으면 그냥 빈 리스트로 시작
+                
+                # 1. 데이터가 딕셔너리 형태인 경우 (새로운 형식: 점수 + 퀴즈)
+                if isinstance(data, dict):
+                    self.high_score = data.get("high_score", 0)
+                    quiz_data = data.get("quizzes", [])
+                    self.quizzes = [Quiz(**q) for q in quiz_data]
+                
+                # 2. 데이터가 리스트 형태인 경우 (예전 형식: 퀴즈만 있음)
+                elif isinstance(data, list):
+                    self.high_score = 0
+                    self.quizzes = [Quiz(**q) for q in data]
+                    
+        except (FileNotFoundError, json.JSONDecodeError):
+            # 파일이 없거나 내용이 비어있을 때 초기화
             self.quizzes = []
+            self.high_score = 0
 
-    def delete_quiz(self):
-        self.show_quizzes() # 먼저 목록을 보여줌
-        if not self.quizzes:
-            return
-
-        try:
-            index = int(input("\n삭제할 퀴즈 번호를 입력하세요: ")) - 1
-            if 0 <= index < len(self.quizzes):
-                removed = self.quizzes.pop(index)
-                print(f"\n[삭제 완료] '{removed.question}' 문제가 삭제되었습니다.")
-                self.save_quizzes() # 삭제 후 파일에 즉시 반영!
-            else:
-                print("\n[오류] 잘못된 번호입니다.")
-        except ValueError:
-            print("\n[오류] 숫자만 입력 가능합니다.")
-# 프로그램의 시작점
-#임포트가 아니라 python main.py라고 쳐서 이 파일을 주인공으로 실행했을 때 게임을 즉시 시작한다는 내용
 if __name__ == "__main__":
-    #QuizGame() 바탕으로 게임기 제작
     game = QuizGame()
-    #게임기 실행    
     game.run()
