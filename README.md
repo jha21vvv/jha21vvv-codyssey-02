@@ -4,27 +4,41 @@
 - 파이썬 OOP를 활용한 콘솔 기반 퀴즈 프로그램입니다.
 
 ## 2. 퀴즈 주제 선정 이유
-- 아무 생각 없어서 고양고양하고 적어봄
+- 아무 생각 없어서 동물은 뭐라고 우나로 적음
 
 ## 3. 실행 방법
-- python main.py
+- 터미널에 'python main.py'입력
 
 ## 4. 기능 목록
-- 퀴즈 풀기 / 추가 / 목록 보기 / 점수 확인
+- 깃 저장소 설정
 
 ## 5. 파일 구조
 - main.py: 메인 실행 파일
-- state.json: 데이터 저장 파일
-- quizzes.json (퀴즈 데이터 저장), scores.json (점수 기록 저장)
+- state.json: 데이터 저장 파일(퀴즈데이터, 최고 점수, 플레이 이력 전부)
+- README.md: 관련 설명 데이터
 
-
-## 6. .gitignore 입력사항
+## 6. 깃저장소 만들기
+1. 새로운 저장소 만들기(https://github.com/jha21vvv/jha21vvv-codyssey-02)
+2. 로컬에 저장소 만들기
 ``` bash
-#Git이 추적하지 말아야 할 파일들을 적어주는 곳
+# 클론으로 제작
+git clone https://github.com/jha21vvv/jha21vvv-codyssey-02.git
+```
+
+3. gitignore와 README.md만들기
+- README.md는 1의 새로운 저장소 만들 때 기본 설정으로 만듬.
+- .gitignore만들기는 아래 내용
+``` bash
+# Git이 추적하지 말아야 할 파일들을 적어주는 곳
 __pycache__/
 *.pyc
 state.json
 ```
+4. 첫번째 커밋과 푸쉬
+![포트 매핑 결과](./docs/screenshots/first_push.png)
+
+
+## 7. 
 ### `Fix: 점수 계산 오류 수정`
 ## 7. 커밋과 푸시 기본
 ``` bash
