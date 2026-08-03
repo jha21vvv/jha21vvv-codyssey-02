@@ -88,4 +88,77 @@ jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch
 * main
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % 
 
+### 비정상 종료 방지:** `Ctrl+C` (KeyboardInterrupt) 또는 `EOFError` 발생 시 안전하게 저장 후 종료.
+``` bash
+    try:
+        while self.is_running:
+            self.display_menu()
+            # 메뉴 선택도 안전하게 받기
+            choice = input("원하는 메뉴 번호를 입력하세요: ").strip()
+            
+            if choice == "1": self.play_quiz()
+            # ... (나머지 elif 생략)
+            elif choice == "6": self.exit_game()
+            else: print("\n[오류] 1~6 사이의 숫자를 입력해주세요.")
+            
+    except (KeyboardInterrupt, EOFError): # Ctrl+C 또는 입력 종료 시
+        self.exit_game()
 
+def exit_game(self):
+    print("\n\n[알림] 프로그램을 안전하게 종료합니다. 데이터를 저장합니다...")
+    self.save_data() # 종료 전 자동 저장
+    self.is_running = False
+```
+
+### 숫자 입력: 앞뒤 공백 제거, 숫자 변환 실패 시 재입력, 허용 범위 밖 숫자 처리, 빈 입력 처리.
+``` bash
+def run(self):
+    def get_safe_input(self, prompt, min_val=None, max_val=None):
+        while True:
+            try:
+                user_input = input(prompt).strip() # 1. 앞뒤 공백 제거
+                if not user_input: # 2. 빈 입력 처리
+                    print("⚠️ 입력값이 없습니다. 다시 입력해주세요.")
+                    continue
+                
+                val = int(user_input) # 3. 숫자 변환
+                
+                # 4. 허용 범위 밖 숫자 처리
+                if min_val is not None and val < min_val:
+                    print(f"⚠️ {min_val} 이상의 숫자를 입력하세요.")
+                elif max_val is not None and val > max_val:
+                    print(f"⚠️ {max_val} 이하의 숫자를 입력하세요.")
+                else:
+                    return val # 모든 조건 만족 시 반환
+            except ValueError: # 5. 숫자 변환 실패 시 재입력
+                print("⚠️ 숫자로만 입력해주세요.")
+``` 
+### 데이터 복구:** 파일이 없거나 손상 시 기본 퀴즈 데이터로 복구하여 실행 가능해야 함
+``` bash
+    def load_data(self):
+        try:
+            with open("quizzes.json", "r", encoding="utf-8") as f:
+                data = json.load(f)
+                
+                # 1. 데이터가 딕셔너리 형태인 경우 (최신 형식)
+                if isinstance(data, dict):
+                    self.high_score = data.get("high_score", 0)
+                    quiz_data = data.get("quizzes", [])
+                    self.quizzes = [Quiz(**q) for q in quiz_data]
+                
+                # 2. 데이터가 리스트 형태인 경우 (이전 버전 호환용)
+                elif isinstance(data, list):
+                    self.high_score = 0
+                    self.quizzes = [Quiz(**q) for q in data]
+                    
+        except (FileNotFoundError, json.JSONDecodeError):
+            # [요구사항 반영] 파일이 없거나 손상되었을 때의 복구 로직
+            print("\n[! 데이터 복구] 파일이 없거나 손상되어 기본 퀴즈 데이터로 복구합니다.")
+            self.high_score = 0
+            # 기본 퀴즈 데이터 1개 제공 (사용자가 바로 게임을 테스트해볼 수 있게 함)
+            self.quizzes = [
+                Quiz("파이썬의 창시자는?", ["귀도 반 로섬", "제임스 고슬링", "데니스 리치", "빌 게이츠"], 1, "네덜란드 출신 프로그래머")
+            ]
+            # 복구된 데이터를 파일로 즉시 저장하여 다음 실행 시 오류 방지
+            self.save_data()
+``` 
