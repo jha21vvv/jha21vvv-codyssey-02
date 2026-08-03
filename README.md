@@ -66,6 +66,11 @@ Switched to a new branch 'feature/play-quiz'
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch
 * feature/play-quiz
   main
+
+### 수정후 내용 저장
+git add .
+git commit -m "merge test" 
+git push origin feature/play-quiz
 ### 메인으로 이동
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git checkout main
 Switched to branch 'main'
