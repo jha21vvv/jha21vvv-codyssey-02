@@ -46,7 +46,8 @@ class QuizGame:
         print("2. 퀴즈 등록")
         print("3. 퀴즈 목록 보기")
         print("4. 최고 점수 확인")
-        print("5. 종료")
+        print("5. 퀴즈 삭제")
+        print("6. 종료")
         print("="*20)
 
     def run(self):
@@ -55,7 +56,7 @@ class QuizGame:
             choice = input("원하는 메뉴 번호를 입력하세요: ")
             
             if choice == "1":
-                print("\n[알림] 퀴즈 풀기 기능을 준비 중입니다.")
+                self.play_quiz()
             elif choice == "2":
                # print("\n[알림] 퀴즈 등록 기능을 준비 중입니다.") <- 이 줄을 아래로 교체
                self.add_quiz()
@@ -124,7 +125,7 @@ class QuizGame:
             answer = int(input("정답 번호를 입력하세요 (1~4): "))
             if 1 <= answer <= 4:
                 # 4. Quiz 객체 생성 및 리스트에 추가
-                new_quiz = Quiz(question, choices, hint) 
+                new_quiz = Quiz(question, choices, answer, hint) 
                 self.quizzes.append(new_quiz)
                 print("\n[성공] 퀴즈가 등록되었습니다!")
             else:

@@ -70,6 +70,7 @@ jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch
 ### 수정후 내용 저장
 git add .
 git commit -m "merge test" 
+# 오리진이란 서버로 보내는셈이라 오리진이라고 붙임
 git push origin feature/play-quiz
 ### 메인으로 이동
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git checkout main
