@@ -35,7 +35,7 @@ __pycache__/
 state.json
 ```
 4. 첫번째 커밋과 푸쉬
-![포트 매핑 결과](./docs/screenshots/first_push.png)
+![첫번째 커밋](./docs/screenshots/first_push.png)
 
 
 ## 7. 
