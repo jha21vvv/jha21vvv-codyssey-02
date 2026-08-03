@@ -71,6 +71,40 @@ class QuizGame:
             else:
                 # 메시지를 1~6으로 수정
                 print("\n[오류] 잘못된 입력입니다. 1~6 사이의 숫자를 입력해주세요.")
+
+    def play_quiz(self):
+        if not self.quizzes:
+            print("\n[!] 등록된 퀴즈가 없습니다.")
+            return
+
+        print(f"\n--- 게임 시작! (틀리면 힌트가 제공됩니다) ---")
+        score = 0
+
+        for idx, quiz in enumerate(self.quizzes, 1):
+            # --- [추가] 맞힐 때까지 반복하는 구간 ---
+            while True: 
+                print(f"\nQ{idx}. {quiz.question}")
+                for i, choice in enumerate(quiz.choices, 1):
+                    print(f"  {i}) {choice}")
+                
+                try:
+                    user_ans = int(input("정답 번호: "))
+                    
+                    if user_ans == quiz.answer:
+                        print("정답입니다! ✨")
+                        score += 1
+                        break  # 정답을 맞혔으므로 while문을 빠져나가 다음 문제(for문)로 이동
+                    else:
+                        print("오답입니다. 😢")
+                        if quiz.hint:
+                            print(f"💡 힌트: {quiz.hint}")
+                        print("다시 한번 생각해보세요!")
+                        # break가 없으므로 다시 while문의 처음으로 돌아가 같은 문제를 냅니다.
+                except ValueError:
+                    print("숫자만 입력해주세요!")
+            # ---------------------------------------
+        print(f"\n--- 게임 종료! 최종 점수: {score} / {len(self.quizzes)} ---")
+
     def add_quiz(self):
         print("\n" + "-"*20)
         print("새로운 퀴즈를 등록합니다.")
