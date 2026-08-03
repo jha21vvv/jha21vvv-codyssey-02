@@ -46,7 +46,7 @@ git push origin main
 bash
 📋 복사
 git checkout -b feature/play-quiz
-(이제 main이 아닌 feature/play-quiz라는 복사본 작업실에서 코드를 수정하게 됩니다.)
+일단 main에서 나가는코드 -b 새로운 ㅡ랜치(포스트잇만듬)
 
 기능 구현 후 커밋: 퀴즈 풀기 기능을 만들면서 커밋을 쪼개서 해보세요. (예: "문제 출력 기능 구현", "정답 체크 로직 구현" 등) 이렇게 하면 10개 커밋 채우기가 쉽습니다.
 
@@ -55,4 +55,25 @@ git checkout -b feature/play-quiz
 bash
 📋 복사
 git checkout main
+메인으로 브랜치이동
 git merge feature/play-quiz
+메인에 포스트잇()에 붙은 내용 옮겨 적음
+
+
+jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git checkout -b feature/play-quiz
+Switched to a new branch 'feature/play-quiz'
+jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch
+* feature/play-quiz
+  main
+jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git checkout main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch       
+  feature/play-quiz
+* main
+jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git merge feature/play-quiz
+Already up to date.
+jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch                 
+  feature/play-quiz
+* main
+jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % 
