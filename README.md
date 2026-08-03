@@ -59,21 +59,27 @@ git checkout main
 git merge feature/play-quiz
 메인에 포스트잇()에 붙은 내용 옮겨 적음
 
-
+### 기존에 메인에서 나와서 새로운 브랜치 만듬
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git checkout -b feature/play-quiz
 Switched to a new branch 'feature/play-quiz'
+### 브랜치 상황확인
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch
 * feature/play-quiz
   main
+### 메인으로 이동
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git checkout main
 Switched to branch 'main'
 Your branch is up to date with 'origin/main'.
+### 브랜치이동 확인
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch       
   feature/play-quiz
 * main
+### 메인에 feature/play-quiz의 내용 옮겨 적기
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git merge feature/play-quiz
 Already up to date.
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % git branch                 
   feature/play-quiz
 * main
 jha21vvv5332@c6r6s2 jha21vvv-codyssey-02 % 
+
+
