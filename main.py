@@ -228,6 +228,7 @@ class QuizGame:
             }
             with open("state.json", "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
+                # dump는 저장하다-data는 저장할것-f는 객체용 그릇, 위에 "state.json"을 f라고 했음-"ASCII(영어 중심 문자 체계)만 고집할 것인가?" -> "아니오(False)"-들여쓰기를 4칸씩 해줘:이 옵션이 없으면 JSON 파일의 모든 내용이 한 줄로 길게 붙어서 저장(인간 읽기용)
             # print("\n[시스템] 데이터가 state.json에 안전하게 저장되었습니다.")
         except Exception as e:
             print(f"\n[오류] 파일 저장 중 문제가 발생했습니다: {e}")
@@ -246,6 +247,9 @@ class QuizGame:
                     self.history = data.get("history", []) # 히스토리 불러오기
                     quiz_data = data.get("quizzes", [])
                     self.quizzes = [Quiz(**q) for q in quiz_data]
+                    # **q: 만약 q가 {"question": "1+1?", "choices": ["2", "3"], "answer": "2"} 라면, **q는 question="1+1?", choices=["2", "3"], answer="2"로 변신합니다.
+                    # Quiz(**q) (객체 생성)의미: "풀어헤쳐진 데이터를 재료로 삼아 Quiz 클래스의 인스턴스(객체)를 만들어라"는 뜻입니다.
+
                 
                 # 2. 데이터가 리스트 형태인 경우 (이전 버전 호환용)
                 elif isinstance(data, list):
