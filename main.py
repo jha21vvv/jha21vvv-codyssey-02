@@ -265,6 +265,6 @@ class QuizGame:
             # 복구된 데이터를 파일로 즉시 저장하여 다음 실행 시 오류 방지
             self.save_data()
 
-if __name__ == "__main__":
-    game = QuizGame()
-    game.run()
+if __name__ == "__main__":  #임포트되지 않은 상황에서
+    game = QuizGame() #퀴즈 게임기를 만들어서
+    game.run() # 실행한다는 내용

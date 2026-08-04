@@ -9,7 +9,7 @@
 ## 3. 실행 방법
 - 터미널에 'python main.py'입력
 
-## 4. 기능 목록
+## 4. 기능 목록(기능요구사항 기준)
 - 깃 저장소 설정
 - 메뉴기능 완료
 - 공통기능 예외기능 입력
@@ -30,9 +30,14 @@
 - 보너스: 점수히스토리 기능
 
 ## 5. 파일 구조
-- main.py: 메인 실행 파일
-- state.json: 데이터 저장 파일(퀴즈데이터, 최고 점수, 플레이 이력 전부)
-- README.md: 관련 설명 데이터
+``` bash
+jha21vvv-codyssey-02/
+├── main.py #실행 파일
+├── state.json #데이터 저장 파일(퀴즈데이터, 최고 점수, 플레이 이력 전부)
+├── README.md # 사용 설명서
+└── .gitignore # 깃 허브에서 제외 자료
+└── docs/screenshots # READNE.md의 사진 자료
+```
 
 ## 6. 깃저장소 만들기
 1. 새로운 저장소 만들기(https://github.com/jha21vvv/jha21vvv-codyssey-02)
@@ -415,3 +420,61 @@ git pull origin main
         print("[시스템] 변경사항이 state.json에 안전하게 저장되었습니다.")score": score
         }
 ```
+## 21. 학습목표 관련 예상 질의
+1. int는 정수를 의미함, str은 문자열, 리스트는 인덱스(순서)를 기반으로 만들어진 열이라면, 딕셔너리는 키ㅣ(이름표)와 값을 쌍으로 하여 만들어진 열
+2. 함수의 정의: 특정 작업을 하도록 짜여진 코드를 단축명으로 부르는 방식. 매개변수는 그 업무를 수행하는데 필요하여 넣는 변수 값이고, 반환값은 리턴으로 함수에서 내보내는 결과 값임.
+3. 클래스는 붕어빵 틀이고, 객체는 거기서 나오는 붕어빵. 퀴즈 클래스가 존재하고 그에 따라 만들어진 퀴즈들은 객체. 퀴즈게임 클래스가 존재하고 퀴즈들을 출력하는건 객체 행동
+4. 어트리듀션과메서드 구분
+- Quiz 클래스 (게임 전체 관리자)
+어트리뷰트 (속성 - 명사/데이터)
+self.question: 문제 내용
+self.choices: 보기들 (리스트)
+self.answer: 정답 번호
+self.hint: 힌트 내용
+메서드 (행동 - 동사/기능)
+to_dict(): (만약 만드셨다면) 퀴즈 정보를 딕셔너리로 변환하는 기능
+check_answer(): 사용자가 입력한 답이 맞는지 확인하는 기능
+- QuizGame 클래스 (게임 전체 관리자)
+이 클래스는 게임을 운영하고 데이터를 관리합니다.
+어트리뷰트 (속성 - 명사/데이터)
+self.quizzes: Quiz 객체들을 담고 있는 리스트
+self.high_score: 저장된 최고 점수
+self.filename: 데이터가 저장될 파일명 (state.json)
+메서드 (행동 - 동사/기능)
+load_quizzes(): 파일에서 데이터를 불러오기
+save_quizzes(): 파일에 데이터를 저장하기
+add_quiz(): 새로운 퀴즈를 추가하기
+play_quiz(): 게임을 시작하기
+get_safe_input(): 입력을 검사하기
+5. ___init___과 self
+- ___init___: 객체가 만들어질 때 자동으로 호출되는 특수한 함수, 기본 정보(속성)를 세팅해
+``` bash
+class Quiz:
+    def __init__(self, question, choices, answer, hint):
+        self.question = question
+        self.choices = choices
+        self.answer = answer
+        self.hint = hint
+
+class QuizGame:
+    def __init__(self):
+        self.is_running = True
+        self.quizzes = []
+        self.high_score = 0  # 변수명을 high_score로 통일
+        self.history = [] # 점수 기록 히스토리 리스트 추가
+        self.load_data()      # 메서드명을 load_data로 통일
+```
+- self: 클래스 내부에서 "내 주머니에 있는 데이터를 쓸 거야"라고 말할 때 사용, 1번 붕어빵의 속인지 2번 붕어빵의 속인지 구분할
+6. 파일을 열고, 읽고, 쓰고 기본 방법
+- 파일을 여는 행위는 해당 데이터로 연결하는 행위
+- 읽는것은 데이터를 들고와서 출력
+- 쓰는것은 해당 데이터를 들고와서 수정하여 다시 보내고 저장 시킴.
+
+7. JSON형식은 무엇이고, 왜 데이터 저장에 사용하는지?
+- JavaScript Object Notation의 약자
+- JSON은 리스트와 딕셔너리 구조를 그대로 유지하며 저장하기 때문에, 불러오자마자 바로 파이썬 객체로 쓸 수 있음
+- 메모장으로 열어봐도 어떤 데이터가 들어있는지 한눈에 알 수 있다
+- 용량이 작고 가볍다.
+- 호환성이 뛰나다.
+
+8. Git의 init뜻: 현재 내가 작업하고 있는 폴더를 "이제부터 Git이 관리하는 저장소로 만들겠다!"라고 선언하는 명령어
