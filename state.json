@@ -1,54 +1,13 @@
 {
-    "high_score": 3,
+    "high_score": 2,
     "history": [
         {
-            "date": "2026-08-03 17:39:08",
-            "num_questions": 1,
-            "score": 2
-        },
-        {
-            "date": "2026-08-03 17:44:08",
-            "num_questions": 2,
-            "score": 0
-        },
-        {
-            "date": "2026-08-03 17:44:33",
-            "num_questions": 2,
-            "score": 3
-        },
-        {
-            "date": "2026-08-03 17:50:49",
-            "num_questions": 2,
-            "score": 1
-        },
-        {
-            "date": "2026-08-03 20:07:27",
-            "num_questions": 3,
-            "score": 0
-        },
-        {
-            "date": "2026-08-03 21:28:11",
+            "date": "2026-08-04 19:09:10",
             "num_questions": 3,
             "score": 2
-        },
-        {
-            "date": "2026-08-04 16:01:15",
-            "num_questions": 3,
-            "score": 0
         }
     ],
     "quizzes": [
-        {
-            "question": "고양이는 어떻게 울까?",
-            "choices": [
-                "고양고양",
-                "미야오미야오",
-                "니코니코",
-                "거참 뭘 자꾸 건드리소!!!"
-            ],
-            "answer": 4,
-            "hint": "전라도산 고양이다"
-        },
         {
             "question": "강아지는 어떻게 울까?",
             "choices": [
@@ -92,17 +51,6 @@
             ],
             "answer": 4,
             "hint": "제주도 출신이시다"
-        },
-        {
-            "question": "예제",
-            "choices": [
-                "1",
-                "2",
-                "3",
-                "4"
-            ],
-            "answer": 1,
-            "hint": "5"
         }
     ]
 }
